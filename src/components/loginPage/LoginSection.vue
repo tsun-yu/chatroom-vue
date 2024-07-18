@@ -1,9 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import CustomBtn from '../CustomBtn.vue'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile
+} from 'firebase/auth'
+import { errorMessages } from 'src/util/errorMessages'
+import { auth } from '../../util/firebase'
+
 const username = ref('')
-const email = ref('')
-const password = ref('')
+const email = ref('admin@gmail.com')
+const password = ref('admin1234')
 const confirm = ref('')
 const props = defineProps({
   hasMember: {
@@ -11,25 +19,56 @@ const props = defineProps({
     required: true
   }
 })
+
+const signIn = async (email: string, password: string) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password)
+    // navigate("/");
+  } catch (error: any) {
+    // const errorCode = error.code;
+    // const errorMessage = error.message;
+    // const customErrorMessage =
+    //   errorMessages[errorCode] || `${errorCode}: ${errorMessage}`;
+    // setErrMsg(customErrorMessage);
+  }
+}
+
+const signUp = async (email: string, password: string, displayName: string) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    const user = userCredential.user
+    await updateProfile(user, {
+      displayName
+    })
+    // navigate("/");
+  } catch (error: any) {
+    // const errorCode = error.code;
+    // const errorMessage = error.message;
+    // const customErrorMessage =
+    //   errorMessages[errorCode] || `${errorCode}: ${errorMessage}`;
+    // setErrMsg(customErrorMessage);
+  }
+}
 </script>
 
 <template>
   <div class="login">
     <h2><slot name="label"></slot></h2>
     <div className="login__input" v-if="!hasMember">
-      <input type="text" id="username" placeholder="Username" v-model="username" />
+      <input type="text" id="username" placeholder="Username" v-model.trim="username" />
     </div>
     <div className="login__input">
-      <input type="email" id="email" placeholder="Email" v-model="email" />
+      <input type="email" id="email" placeholder="Email" v-model.trim="email" />
     </div>
     <div className="login__input">
-      <input type="password" id="password" placeholder="Password" v-model="password" />
+      <input type="password" id="password" placeholder="Password" v-model.trim="password" />
     </div>
     <div className="login__input" v-if="!hasMember">
-      <input type="password" id="confirm" placeholder="Confirm" v-model="confirm" />
+      <input type="password" id="confirm" placeholder="Confirm" v-model.trim="confirm" />
     </div>
     <div className="login__input">
-      <CustomBtn>{{ hasMember ? 'Login' : 'Signup' }}</CustomBtn>
+      <CustomBtn @click="signIn(email, password)" v-show="hasMember">Login</CustomBtn>
+      <CustomBtn @click="signUp(email, password, username)" v-show="!hasMember">Signup</CustomBtn>
     </div>
   </div>
 </template>

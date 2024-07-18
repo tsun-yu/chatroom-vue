@@ -1,12 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import LoginSection from '../components/loginPage/LoginSection.vue'
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from '../util/firebase'
 
-const isLogin = ref(false)
+const isLogin = ref(true)
 const hasMember = ref(true)
+
 const hasMemeberToggle = () => {
   hasMember.value = !hasMember.value
 }
+const checkSignedStatus = async () => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      isLogin.value = true
+      return
+    }
+    isLogin.value = false
+  })
+}
+
+onMounted(() => {
+  checkSignedStatus()
+})
 </script>
 
 <template>

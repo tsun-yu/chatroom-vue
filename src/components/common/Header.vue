@@ -2,10 +2,16 @@
 import Hamburger from '@/components/common/Hamburger.vue'
 import IconFirebase from '@/components/icons/IconFirebase.vue'
 import { CircleUser } from 'lucide-vue-next'
+import { signOut } from 'firebase/auth'
+import { auth } from '../../util/firebase'
 
 const isExpand = defineModel('isExpand', {
   type: Boolean
 })
+
+const logOut = async () => {
+  await signOut(auth)
+}
 </script>
 
 <template>
@@ -14,7 +20,7 @@ const isExpand = defineModel('isExpand', {
       <Hamburger v-model:isExpand="isExpand" />
       <h1 class="header__logo"><IconFirebase />Chatroom - React</h1>
     </div>
-    <div class="header__member">
+    <div class="header__member" @click="logOut">
       <CircleUser />
     </div>
   </header>
