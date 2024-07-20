@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   updateProfile
 } from 'firebase/auth'
-import { errorMessages } from 'src/util/errorMessages'
+// import { errorMessages } from 'src/util/errorMessages'
 import { auth } from '../../util/firebase'
 
 const username = ref('')
