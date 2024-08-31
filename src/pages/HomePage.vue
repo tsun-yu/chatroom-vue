@@ -20,7 +20,7 @@ const postData = () => {
         @keydown.enter.prevent="postData"
       />
       <button @click="postData">
-        <SendHorizontal />
+        <v-icon name="oi-paper-airplane" scale="1.5" />
       </button>
     </div>
   </main>

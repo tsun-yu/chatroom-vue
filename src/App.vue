@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterLink, RouterView } from 'vue-router'
-import Header from './components/common/Header.vue'
+import { RouterView } from 'vue-router'
+import TheHeader from '@/components/common/TheHeader.vue'
 import SidebarItem from './components/common/SidebarItem.vue'
 
 const isExpand = ref(false)
@@ -9,7 +9,7 @@ const isExpand = ref(false)
 
 <template>
   <div id="root" :class="{ expand: isExpand }">
-    <Header v-model:isExpand="isExpand" />
+    <TheHeader v-model:isExpand="isExpand" />
     <SidebarItem />
     <RouterView />
   </div>

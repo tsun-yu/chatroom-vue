@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import Hamburger from '@/components/common/Hamburger.vue'
+import TheHamburger from '@/components/common/TheHamburger.vue'
 import IconFirebase from '@/components/icons/IconFirebase.vue'
-import { CircleUser } from 'lucide-vue-next'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../util/firebase'
 
@@ -17,11 +16,11 @@ const logOut = async () => {
 <template>
   <header>
     <div>
-      <Hamburger v-model:isExpand="isExpand" />
-      <h1 class="header__logo"><IconFirebase />Chatroom - React</h1>
+      <TheHamburger v-model:isExpand="isExpand" />
+      <h1 class="header__logo"><IconFirebase />Chatroom - Vue</h1>
     </div>
     <div class="header__member" @click="logOut">
-      <CircleUser />
+      <v-icon name="bi-person-circle" scale="1.5" />
     </div>
   </header>
 </template>
