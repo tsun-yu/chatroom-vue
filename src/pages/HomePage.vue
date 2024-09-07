@@ -1,16 +1,83 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { SendHorizontal } from 'lucide-vue-next'
+import ChatItem from '@/components/home/ChatItem.vue'
+import { ref, onMounted, onUpdated } from 'vue'
+import { auth, db } from '../util/firebase'
+import { onAuthStateChanged } from 'firebase/auth'
+import { child, onValue, push, ref as fbRef, update } from 'firebase/database'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
 const chatContainerRef = ref<HTMLElement | null>(null)
+const messages = ref<Array<MessagesType>>([])
+const email = ref('')
+const displayName = ref('')
+
 const typeText = ref<string>('')
-const postData = () => {
-  console.log('post data')
+
+interface MessagesType {
+  email: string
+  id: string | null
+  message: string
+  username: string
 }
+
+const getData = async () => {
+  const userRef = fbRef(db, 'chatroom/')
+  onValue(userRef, (snapshot) => {
+    const data = snapshot.val()
+    const dataArray = Object.keys(data).map((key) => {
+      return data[key]
+    }) as Array<MessagesType>
+    messages.value = dataArray
+  })
+}
+const postData = async () => {
+  if (typeText.value === '') return
+
+  const newKey = push(child(fbRef(db), 'chatroom/')).key
+
+  const updates: { [key: string]: MessagesType } = {}
+  updates['/chatroom/' + newKey] = {
+    username: displayName.value,
+    email: email.value,
+    message: typeText.value,
+    id: newKey
+  }
+
+  await update(fbRef(db), updates)
+  typeText.value = ''
+}
+const checkSignedStatus = async () => {
+  onAuthStateChanged(auth, (user) => {
+    if (!user) router.push('/login')
+    email.value = user?.email ? user.email : ''
+    displayName.value = user?.displayName ? user.displayName : ''
+  })
+}
+
+onMounted(async () => {
+  await checkSignedStatus()
+  await getData()
+})
+onUpdated(async () => {
+  if (chatContainerRef.value) {
+    chatContainerRef.value.scrollTop = chatContainerRef.value.scrollHeight
+  }
+})
 </script>
 
 <template>
   <main>
-    <div class="container" ref="chatContainerRef"></div>
+    <div class="container" ref="chatContainerRef">
+      <ChatItem
+        v-for="msg in messages"
+        :key="msg.id"
+        :username="msg.username"
+        :message="msg.message"
+        :isCurrentUser="msg.username === displayName"
+      />
+    </div>
     <div class="input__container">
       <input
         type="text"
