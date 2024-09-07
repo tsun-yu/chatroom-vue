@@ -71,8 +71,8 @@ onUpdated(async () => {
   <main>
     <div class="container" ref="chatContainerRef">
       <ChatItem
-        v-for="msg in messages"
-        :key="msg.id"
+        v-for="(msg, idx) in messages"
+        :key="'msg' + idx"
         :username="msg.username"
         :message="msg.message"
         :isCurrentUser="msg.username === displayName"

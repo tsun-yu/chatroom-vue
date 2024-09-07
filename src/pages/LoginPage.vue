@@ -3,7 +3,9 @@ import { onMounted, ref } from 'vue'
 import LoginSection from '../components/loginPage/LoginSection.vue'
 import { onAuthStateChanged } from 'firebase/auth'
 import { auth } from '../util/firebase'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
 const isLogin = ref(true)
 const hasMember = ref(true)
 
@@ -14,6 +16,7 @@ const checkSignedStatus = async () => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       isLogin.value = true
+      router.push('/')
       return
     }
     isLogin.value = false
@@ -43,11 +46,6 @@ onMounted(() => {
             {{ hasMember ? 'Login' : 'Signup' }}
           </template>
         </LoginSection>
-        <!-- {hasMember ? (
-        <LoginSection label="Login" hasMember="{hasMember}" />
-        ) : (
-        <LoginSection label="Signup" hasMember="{hasMember}" />
-        )} -->
       </template>
     </div>
   </div>

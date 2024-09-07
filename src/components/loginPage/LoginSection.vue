@@ -8,6 +8,7 @@ import {
 } from 'firebase/auth'
 // import { errorMessages } from 'src/util/errorMessages'
 import { auth } from '../../util/firebase'
+import { useRouter } from 'vue-router'
 
 const username = ref('')
 const email = ref('admin@gmail.com')
@@ -20,10 +21,12 @@ const props = defineProps({
   }
 })
 
+const router = useRouter()
+
 const signIn = async (email: string, password: string) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password)
-    // navigate("/");
+    router.push('/')
   } catch (error: any) {
     // const errorCode = error.code;
     // const errorMessage = error.message;
@@ -40,7 +43,7 @@ const signUp = async (email: string, password: string, displayName: string) => {
     await updateProfile(user, {
       displayName
     })
-    // navigate("/");
+    router.push('/')
   } catch (error: any) {
     // const errorCode = error.code;
     // const errorMessage = error.message;
