@@ -51,8 +51,8 @@ const postData = async () => {
 const checkSignedStatus = async () => {
   onAuthStateChanged(auth, (user) => {
     if (!user) router.push('/login')
-    email.value = user?.email ? user.email : ''
-    displayName.value = user?.displayName ? user.displayName : ''
+    email.value = user?.email || ''
+    displayName.value = user?.displayName || ''
   })
 }
 
