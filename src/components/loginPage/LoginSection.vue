@@ -6,14 +6,13 @@ import {
   signInWithEmailAndPassword,
   updateProfile
 } from 'firebase/auth'
-// import { errorMessages } from 'src/util/errorMessages'
 import { auth } from '../../util/firebase'
 import { useRouter } from 'vue-router'
 import { errorMessages } from '@/util/errorMessages'
 
 const username = ref('')
-const email = ref('admin@gmail.com')
-const password = ref('admin1234')
+const email = ref('')
+const password = ref('')
 const confirm = ref('')
 const errMsg = ref('')
 const emailInputErr = computed(() => {

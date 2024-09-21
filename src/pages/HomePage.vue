@@ -34,7 +34,7 @@ const getData = async () => {
 }
 const postData = async () => {
   if (typeText.value === '') return
-
+  await checkSignedStatus()
   const newKey = push(child(fbRef(db), 'chatroom/')).key
 
   const updates: { [key: string]: MessagesType } = {}
@@ -49,6 +49,7 @@ const postData = async () => {
   typeText.value = ''
 }
 const checkSignedStatus = async () => {
+  if (email.value && displayName.value) return
   onAuthStateChanged(auth, (user) => {
     if (!user) router.push('/login')
     email.value = user?.email || ''
@@ -75,7 +76,7 @@ onUpdated(async () => {
         :key="'msg' + idx"
         :username="msg.username"
         :message="msg.message"
-        :isCurrentUser="msg.username === displayName"
+        :isCurrentUser="msg.email === email"
       />
     </div>
     <div class="input__container">
