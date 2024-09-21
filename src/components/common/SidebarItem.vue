@@ -18,7 +18,7 @@ import IconSvelte from '@/components/icons/IconSvelte.vue'
       </p>
       Vue3
     </a>
-    <a href="">
+    <a>
       <p>
         <IconSvelte />
       </p>
