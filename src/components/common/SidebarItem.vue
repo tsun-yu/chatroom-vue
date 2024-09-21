@@ -12,7 +12,7 @@ import IconSvelte from '@/components/icons/IconSvelte.vue'
       </p>
       React
     </a>
-    <a class="aside__link--active" href="">
+    <a class="aside__link--active">
       <p>
         <IconVue />
       </p>
